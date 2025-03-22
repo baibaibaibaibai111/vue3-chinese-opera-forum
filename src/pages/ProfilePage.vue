@@ -17,10 +17,10 @@
           <el-input v-model="userInfo.name" :disabled="!isEditing" />
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="userInfo.password" :disabled="!isEditing" />
+          <el-input v-model="userInfo.password" type="password" show-password :disabled="!isEditing" />
         </el-form-item>
         <el-form-item label="电话">
-          <el-input v-model="userInfo.phone" :disabled="!isEditing" />
+          <el-input v-model="userInfo.phone" :disabled="!isEditing" placeholder="请输入手机号" />
         </el-form-item>
       </el-form>
       <div class="button-group" v-if="isEditing">
@@ -28,46 +28,64 @@
         <el-button @click="cancelEdit">取消</el-button>
       </div>
     </el-card>
-
   </div>
 </template>
 
-<script>
-import { ref } from 'vue';
+<script setup>
+import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 
-export default {
-  name: 'Profile',
-  setup() {
-    const userInfo = ref({
-      name: '张三',
-      password: '123123',
-      phone: '123-4567-8901'
-    });
-    const isEditing = ref(false);
+// 定义用户信息
+const userInfo = ref({
+  name: '',
+  password: '',
+  phone: '' // 默认手机号为空
+});
 
-    const saveInfo = () => {
-      isEditing.value = false;
-      ElMessage.success('个人信息已保存');
-    };
+const isEditing = ref(false);
+const originalInfo = ref({}); // 存储初始信息，取消时恢复
 
-    const cancelEdit = () => {
-      isEditing.value = false;
-    };
+// 页面加载时，从 localStorage 读取用户信息
+onMounted(() => {
+  const storedName = localStorage.getItem('username') || '未设置';
+  const storedPassword = localStorage.getItem('password') || '未设置';
+  const storedPhone = localStorage.getItem('phone') || ''; // 可能用户还没设置手机号
 
-    return {
-      userInfo,
-      isEditing,
-      saveInfo,
-      cancelEdit
-    };
-  }
-}
+  userInfo.value = {
+    name: storedName,
+    password: storedPassword,
+    phone: storedPhone
+  };
+
+  // 备份原始数据
+  originalInfo.value = { ...userInfo.value };
+});
+
+// 保存修改
+const saveInfo = () => {
+  // 更新 localStorage
+  localStorage.setItem('username', userInfo.value.name);
+  localStorage.setItem('password', userInfo.value.password);
+  localStorage.setItem('phone', userInfo.value.phone);
+
+  isEditing.value = false;
+  ElMessage.success('个人信息已更新');
+
+  // 刷新页面
+  setTimeout(() => {
+    location.reload();
+  }, 500); // 500ms 让用户有时间看到成功提示
+};
 
 
+// 取消编辑，恢复原始信息
+const cancelEdit = () => {
+  userInfo.value = { ...originalInfo.value }; // 还原
+  isEditing.value = false;
+};
 </script>
 
-<style>
+<style scoped>
 .demo-type {
   display: flex;
 }

@@ -54,8 +54,12 @@ export default {
     // 搜索功能（本地搜索文章）
     const filteredArticles = computed(() => {
       if (!searchText.value) return articles.value
-      return articles.value.filter(a => a.title.includes(searchText.value) || a.summary.includes(searchText.value))
+      return articles.value.filter(a =>
+        (a.title || '').includes(searchText.value) ||
+        (a.summary || '').includes(searchText.value)
+      )
     })
+
 
     // 跳转文章详情页
     const viewArticle = (article) => {

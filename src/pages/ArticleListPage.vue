@@ -13,12 +13,13 @@
       <el-container>
         <!-- 头部搜索框 -->
         <el-header>
-          <el-input style="margin-right: 10px;" v-model="searchQuery" placeholder="搜索戏曲文章..." clearable
-            @clear="fetchArticles" @keyup.enter="fetchArticles">
+          <el-input v-model="searchQuery" placeholder="搜索戏曲文章..." clearable @clear="searchQuery = ''"
+            @keyup.enter="searchQuery = searchQuery.trim()">
             <template #append>
-              <el-button type="primary" @click="fetchArticles">搜索</el-button>
+              <el-button type="primary" @click="searchQuery = searchQuery.trim()">搜索</el-button>
             </template>
           </el-input>
+
         </el-header>
 
         <!-- 文章列表 -->
@@ -52,7 +53,8 @@ const articles = ref([
   { id: 1, title: "京剧艺术的魅力", category: "京剧", image: "https://example.com/jingju.jpg", content: "京剧作为国粹，融合了唱、念、做、打..." },
   { id: 2, title: "昆曲的传承与发展", category: "昆曲", image: "https://example.com/kunqu.jpg", content: "昆曲是中国最古老的戏曲剧种之一..." },
   { id: 3, title: "越剧的起源与风格", category: "越剧", image: "https://example.com/yueju.jpg", content: "越剧以细腻柔美著称，深受女性观众喜爱..." },
-  { id: 4, title: "秦腔：西北的戏曲瑰宝", category: "秦腔", image: "https://example.com/qinqiang.jpg", content: "秦腔是中国西北地区的传统戏曲..." }
+  { id: 4, title: "秦腔：西北的戏曲瑰宝", category: "秦腔", image: "https://example.com/qinqiang.jpg", content: "秦腔是中国西北地区的传统戏曲..." },
+  { id: 5, title: "中国“国粹”", category: "京剧", image: "https://example.com/qinqiang.jpg", content: "京剧是因清朝皇帝乾隆的喜好而诞生..." }
 ])
 
 const categories = ref([
@@ -71,10 +73,11 @@ const router = useRouter()
 const filteredArticles = computed(() => {
   return articles.value.filter(article => {
     const matchCategory = selectedCategory.value === "全部" || article.category === selectedCategory.value
-    const matchSearch = article.title.includes(searchQuery.value) || article.description.includes(searchQuery.value)
+    const matchSearch = article.title.includes(searchQuery.value) || article.content.includes(searchQuery.value)
     return matchCategory && matchSearch
   })
 })
+
 
 // 选择分类
 const selectCategory = (category) => {
@@ -112,6 +115,9 @@ const viewArticle = (article) => {
 .article-card {
   cursor: pointer;
   transition: transform 0.2s ease;
+  width: 320px;
+  height: 290px;
+  margin: 5px;
 }
 
 .article-card:hover {

@@ -71,6 +71,7 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 
 const router = useRouter()
 const isCollapse = ref(false)
+
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
@@ -83,12 +84,19 @@ const logout = () => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
+    // 清空 localStorage
+    localStorage.clear()
+
+    // 跳转到登录页
     router.push('/login')
+
+    // 显示退出成功提示
     ElMessage.success('成功退出')
   }).catch(() => {
     ElMessage.info('取消退出')
   })
 }
+
 </script>
 
 <style>
@@ -118,4 +126,5 @@ html, body, #app {
   width: 120px;
   height: 570px;
 }
+
 </style>
