@@ -6,16 +6,16 @@ import ArticleListPage from '../pages/ArticleListPage.vue';
 import ProfilePage from '../pages/ProfilePage.vue';
 
 const routes = [
-  { path: '/', component: HomePage },
-  { path: '/login', component: LoginPage },
-  { path: '/register', component: RegisterPage },
-  { path: '/articles', component: ArticleListPage },
-  { path: '/profile', component: ProfilePage },
+  { path: '/', name: 'Home', component: HomePage },
+  { path: '/login', name: 'Login', component: LoginPage },
+  { path: '/register', name: 'Register', component: RegisterPage },
+  { path: '/articles', name: 'ArticleList', component: ArticleListPage },
+  { path: '/profile', name: 'Profile', component: ProfilePage }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 });
 
 export default router;

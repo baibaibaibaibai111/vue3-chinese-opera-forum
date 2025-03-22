@@ -1,10 +1,5 @@
 <template>
   <div>
-    <!-- <h2>个人中心</h2>
-    <input type="text" placeholder="修改用户名" v-model="username" />
-    <button @click="updateProfile">更新</button> -->
-
-
     <el-card class="personal-info-card">
       <template #header>
         <div class="card-header">
@@ -37,25 +32,38 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
 
-const userInfo = ref({
-  name: '张三',
-  password: '123123',
-  phone: '123-4567-8901'
-});
-const isEditing = ref(false);
+export default {
+  name: 'Profile',
+  setup() {
+    const userInfo = ref({
+      name: '张三',
+      password: '123123',
+      phone: '123-4567-8901'
+    });
+    const isEditing = ref(false);
 
-const saveInfo = () => {
-  isEditing.value = false;
-  ElMessage.success('个人信息已保存');
-};
+    const saveInfo = () => {
+      isEditing.value = false;
+      ElMessage.success('个人信息已保存');
+    };
 
-const cancelEdit = () => {
-  isEditing.value = false;
-};
+    const cancelEdit = () => {
+      isEditing.value = false;
+    };
+
+    return {
+      userInfo,
+      isEditing,
+      saveInfo,
+      cancelEdit
+    };
+  }
+}
+
 
 </script>
 

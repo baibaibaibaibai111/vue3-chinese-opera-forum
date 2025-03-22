@@ -12,6 +12,7 @@
 <script>
 import { ref, computed } from 'vue';
 export default {
+  name: 'ArticleList',
   setup() {
     const keyword = ref('');
     const articles = ref([

@@ -34,6 +34,7 @@ import image2 from '@/assets/轮播图2.jpg';
 import image3 from '@/assets/轮播图3.jpg';
 
 export default {
+  name: 'Home',
   setup() {
     const searchText = ref('');
     const articles = ref([
